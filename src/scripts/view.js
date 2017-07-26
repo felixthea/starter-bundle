@@ -2,6 +2,7 @@ require('../styles/css/global.css');
 import Placeholder from './cortex/placeholder.js';
 import Logger from './cortex/logger.js';
 import Tracker from './cortex/tracker.js';
+import axios from 'axios';
 
 class View {
   constructor() {
@@ -81,6 +82,17 @@ class View {
     if (this.productionEnv) {
       Tracker.track(this.deviceId, GLOBAL_VARS.campaign, 'tracked');
     }
+    console.log(this.rows.length)
+
+    if (this.rows !== null && this.rows.length !== 0) {
+
+      console.log(`http://localhost:3000?longitude=${this.rows[0].longitude}&latitude=${this.rows[0].latitude}&index=${this.rows[0]._index}`)
+      axios.get(`http://localhost:3000?longitude=${this.rows[0].longitude}`)
+        .then(response => {
+          console.log(response.data)
+          window.document.body.innerHTML = response.data;
+        })
+    }
 
     this._render();
   }
@@ -118,7 +130,7 @@ class View {
    *
    */
   _render() {
-    this.creativeContainer.style.display = 'block';
+    // this.creativeContainer.style.display = 'block';
     if (this.rows === null || this.rows.length === 0) {
       return;
     }else{
