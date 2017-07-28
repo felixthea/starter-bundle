@@ -4,6 +4,8 @@ import Logger from './cortex/logger.js';
 import Tracker from './cortex/tracker.js';
 import axios from 'axios';
 
+import { baseURL } from './config';
+
 class View {
   constructor() {
     this.placeholder = new Placeholder();
@@ -17,8 +19,8 @@ class View {
     this.creativeContainerDebugger = window.document.getElementById(
     'creativeContainer-debugger');
 
-    this.fnRandomImage = function(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
+    this.imp = function (val) {
+      return typeof val === 'undefined' || val === null ? 0 : val;
     };
   }
 
@@ -84,16 +86,17 @@ class View {
     }
     console.log(this.rows.length)
 
+
     if (this.rows !== null && this.rows.length !== 0) {
-
-      console.log(`http://localhost:3000?longitude=${this.rows[0].longitude}&latitude=${this.rows[0].latitude}&index=${this.rows[0]._index}`)
-      axios.get(`http://localhost:3000?longitude=${this.rows[0].longitude}`)
-        .then(response => {
-          console.log(response.data)
-          window.document.body.innerHTML = response.data;
-        })
+      axios.get(baseURL + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.rows[0].latitude + '&lon=' + this.rows[0].longitude)
+      .then(response => {
+        this.errors = '';
+        window.document.body.innerHTML = response.data;
+      }).catch(function (err) {
+        this.placeholder.show();
+        this.errors = err;
+      });
     }
-
     this._render();
   }
 
@@ -136,17 +139,6 @@ class View {
     }else{
       this.placeholder.hide();
     }
-
-    Logger.log(`The view has ${this.rows.length} data rows.`);
-
-    const row = this.rows;
-
-    const objImageRange = {
-      min: 0,
-      max: row.length - 1
-    };
-
-    this.creativeContainer.style.backgroundImage = 'url("' + row[this.fnRandomImage(objImageRange.min, objImageRange.max)].url + '")';
   }
 }
 
