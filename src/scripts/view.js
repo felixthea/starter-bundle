@@ -89,7 +89,7 @@ class View {
       axios.get(baseURL + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.rows[0].latitude + '&lon=' + this.rows[0].longitude)
       .then(response => {
         this.errors = '';
-        window.document.body.innerHTML = response.data;
+        console.log(response)
       }).catch(function (err) {
         this.placeholder.show();
         this.errors = err;
