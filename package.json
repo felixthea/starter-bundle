@@ -7,7 +7,11 @@
     "start": "node node_modules/.bin/webpack-dev-server --define process.env.NODE_ENV='\"development\"' --hot --inline --open --progress --colors --bail --content-base src",
     "prod": "./node_modules/.bin/webpack --define process.env.NODE_ENV='\"production\"' --progress --colors",
     "dev": "./node_modules/.bin/webpack --define process.env.NODE_ENV='\"development\"' --progress --colors",
+<<<<<<< HEAD
     "test": "./node_modules/.bin/nyc ./node_modules/.bin/ava --verbose"
+=======
+    "test": "./node_modules/.bin/ava --verbose"
+>>>>>>> initial tests
   },
   "repository": {
     "type": "git",
@@ -34,11 +38,14 @@
     ],
     "babel": "inherit"
   },
+<<<<<<< HEAD
   "nyc": {
     "exclude": [
       "node_modules"
     ]
   },
+=======
+>>>>>>> initial tests
   "devDependencies": {
     "ava": "^0.21.0",
     "babel-core": "^6.24.1",
@@ -59,7 +66,6 @@
     "webpack-dev-server": "^2.5.0"
   },
   "dependencies": {
-    "axios": "^0.16.2",
     "promise": "^8.0.0"
   }
 }
