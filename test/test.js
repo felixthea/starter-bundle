@@ -1,6 +1,6 @@
 import test from 'ava';
 import { baseURL} from '../src/scripts/config';
-import { TEST_DATA as data } from '../src/scripts/test-data';
+import TEST_DATA from '../src/scripts/test-data';
 
 test('my passing test', t => {
 	t.pass(); 
@@ -15,7 +15,7 @@ test('baseUrl exists', t => {
 });
 
 test('Test data contains latitude', t => {
-	if (data.latitude) {
+	if (TEST_DATA[0].latitude) {
 		t.pass();
 	} else {
 		t.fail();
@@ -23,9 +23,28 @@ test('Test data contains latitude', t => {
 });
 
 test('Test data contains longitude', t => {
-	if (data.longitude) {
+	if (TEST_DATA[0].longitude) {
 		t.pass();
 	} else {
 		t.fail();
 	}
+});
+
+test('Test data contains impressions per 15 seconds', t => {
+	if (TEST_DATA[0].impressions_15_sec) {
+		t.pass();
+	} else {
+		t.fail();
+	}
+});
+
+test('Test data contains a correctly formatted partner venue id', t => {
+	if (TEST_DATA[0]._index) {
+		const regex = /(MN|BK|QU|SI|BX)-\d\d-\d\d\d\d\d\d-(L|R)/gi
+		if (TEST_DATA[0]._index.match(regex)) {
+			t.pass();
+			return
+		}
+	}
+	t.fail();
 });
