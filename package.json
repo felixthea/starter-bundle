@@ -1,12 +1,13 @@
 {
   "name": "linkNYC-starter-bundle",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "HTML5 starter application to be run on LinkNYC",
   "main": "index.js",
   "scripts": {
     "start": "node node_modules/.bin/webpack-dev-server --define process.env.NODE_ENV='\"development\"' --hot --inline --open --progress --colors --bail --content-base src",
     "prod": "./node_modules/.bin/webpack --define process.env.NODE_ENV='\"production\"' --progress --colors",
-    "dev": "./node_modules/.bin/webpack --define process.env.NODE_ENV='\"development\"' --progress --colors"
+    "dev": "./node_modules/.bin/webpack --define process.env.NODE_ENV='\"development\"' --progress --colors",
+    "test": "./node_modules/.bin/ava --verbose"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,22 @@
       "es2015"
     ]
   },
+  "ava": {
+    "files": [
+      "test/*.js"
+    ],
+    "concurrency": 5,
+    "failFast": true,
+    "failWithoutAssertions": false,
+    "tap": false,
+    "powerAssert": false,
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
   "devDependencies": {
+    "ava": "^0.21.0",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.1.0",
     "babel-polyfill": "^6.23.0",
@@ -38,7 +54,6 @@
     "webpack-dev-server": "^2.5.0"
   },
   "dependencies": {
-    "axios": "^0.16.2",
     "promise": "^8.0.0"
   }
 }
