@@ -14,10 +14,13 @@ class View {
     this.productionEnv = process.env.NODE_ENV !== 'development';
 
     this.creativeContainer = window.document.getElementById(
-		'creativeContainer');
+    'creativeContainer');
 
     this.creativeContainerDebugger = window.document.getElementById(
     'creativeContainer-debugger');
+
+    this.errorsOverlay = window.document.getElementById(
+    'errors-overlay')
 
     this.imp = function (val) {
       return typeof val === 'undefined' || val === null ? 0 : val;
@@ -86,15 +89,16 @@ class View {
     }
 
     if (this.rows !== null && this.rows.length !== 0) {
-      console.log(baseURL + ad_id + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.rows[0].latitude + '&lon=' + this.rows[0].longitude)
-      axios.get(baseURL + ad_id + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.rows[0].latitude + '&lon=' + this.rows[0].longitude)
-      .then(response => {
+      const url = baseURL + ad_id + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.rows[0].latitude + '&lon=' + this.rows[0].longitude;
+      axios.get(url)
+      .then(() => {
         this.errors = '';
-        console.log(response)
-      }).catch(function (err) {
+        this.errorsOverlay.style.display = 'none';
+      }).catch((err) => {
         this.placeholder.show();
-        console.lon(err)
         this.errors = err;
+        this.errorsOverlay.style.display = 'block';
+        this.errorsOverlay.innerHTML = `Error: ${this.errors}<br /><br />attempted URL: ${url}`;
       });
     }
     this._render();
@@ -115,7 +119,6 @@ class View {
    *
    */
   updateView() {
-
   }
 
   /**
