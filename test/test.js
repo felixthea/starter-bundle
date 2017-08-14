@@ -1,5 +1,5 @@
 import test from 'ava';
-import { baseURL} from '../src/scripts/config';
+import { baseURL, ad_id } from '../src/scripts/config';
 import TEST_DATA from '../src/scripts/test-data';
 
 test('ava test example', t => {
