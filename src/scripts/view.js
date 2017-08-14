@@ -4,7 +4,7 @@ import Logger from './cortex/logger.js';
 import Tracker from './cortex/tracker.js';
 import axios from 'axios';
 
-import { baseURL } from './config';
+import { baseURL, ad_id } from './config';
 
 class View {
   constructor() {
@@ -86,12 +86,14 @@ class View {
     }
 
     if (this.rows !== null && this.rows.length !== 0) {
-      axios.get(baseURL + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.rows[0].latitude + '&lon=' + this.rows[0].longitude)
+      console.log(baseURL + ad_id + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.rows[0].latitude + '&lon=' + this.rows[0].longitude)
+      axios.get(baseURL + ad_id + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.rows[0].latitude + '&lon=' + this.rows[0].longitude)
       .then(response => {
         this.errors = '';
         console.log(response)
       }).catch(function (err) {
         this.placeholder.show();
+        console.lon(err)
         this.errors = err;
       });
     }
@@ -113,6 +115,7 @@ class View {
    *
    */
   updateView() {
+
   }
 
   /**
