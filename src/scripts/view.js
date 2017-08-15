@@ -87,20 +87,8 @@ class View {
     if (this.productionEnv) {
       Tracker.track(this.deviceId, GLOBAL_VARS.campaign, 'tracked');
     }
+    this.hidden = true;
 
-    if (this.rows !== null && this.rows.length !== 0) {
-      const url = baseURL + ad_id + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.rows[0].latitude + '&lon=' + this.rows[0].longitude;
-      axios.get(url)
-      .then(() => {
-        this.errors = '';
-        this.errorsOverlay.style.display = 'none';
-      }).catch((err) => {
-        this.placeholder.show();
-        this.errors = err;
-        this.errorsOverlay.style.display = 'block';
-        this.errorsOverlay.innerHTML = `Error: ${this.errors}<br /><br />attempted URL: ${url}`;
-      });
-    }
     this._render();
   }
 
@@ -119,6 +107,20 @@ class View {
    *
    */
   updateView() {
+    if (this.rows !== null && this.rows.length !== 0 && this.hidden) {
+      this.hidden = false;
+      const url = baseURL + ad_id + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.rows[0].latitude + '&lon=' + this.rows[0].longitude;
+      axios.get(url)
+      .then(() => {
+        this.errors = '';
+        this.errorsOverlay.style.display = 'none';
+      }).catch((err) => {
+        this.placeholder.show();
+        this.errors = err;
+        this.errorsOverlay.style.display = 'block';
+        this.errorsOverlay.innerHTML = `Error: ${this.errors}<br /><br />attempted URL: ${url}`;
+      });
+    }
   }
 
   /**
