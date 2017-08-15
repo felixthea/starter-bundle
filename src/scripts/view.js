@@ -12,6 +12,7 @@ class View {
     this.rows = [];
     this.deviceId = '';
     this.productionEnv = process.env.NODE_ENV !== 'development';
+    this.impFired = false;
 
     this.creativeContainer = window.document.getElementById(
     'creativeContainer');
@@ -79,6 +80,7 @@ class View {
    *
    */
   render() {
+    this.impFired = false;
     Logger.log('Rendering a new view.');
     if (!window.document.getElementById(GLOBAL_VARS.placeholderID)) {
       this.placeholder.render();
@@ -107,16 +109,23 @@ class View {
    */
   updateView() {
     if (this.rows !== null && this.rows.length !== 0) {
-      axios.get(baseURL + ad_id + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.rows[0].latitude + '&lon=' + this.rows[0].longitude)
-      .then(() => {
-        this.errors = '';
-        this.errorsOverlay.style.display = 'none';
-      }).catch((err) => {
-        this.placeholder.show();
-        this.errors = err;
-        this.errorsOverlay.style.display = 'block';
-        this.errorsOverlay.innerHTML = `Error: ${this.errors}`;
-      });
+      if (!this.impFired) {
+        this.impFired = true;
+        setTimeout(() => {
+          this.index++;
+          const url = baseURL + ad_id + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.index + '&lon=' + this.rows[0].longitude;
+          axios.get(url)
+          .then(() => {
+            this.errors = 'Api called';
+            // this.errorsOverlay.style.display = 'none';
+          }).catch((err) => {
+            this.placeholder.show();
+            this.errors = err;
+            this.errorsOverlay.style.display = 'block';
+            this.errorsOverlay.innerHTML = `Error: ${this.errors}<br /><br />attempted URL: ${url}`;
+          });
+        }, 0)
+      }
     }
   }
 
