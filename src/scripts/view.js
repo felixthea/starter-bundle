@@ -1,9 +1,8 @@
 require('../styles/css/global.css');
 import Placeholder from './cortex/placeholder.js';
 import Logger from './cortex/logger.js';
-import Tracker from './cortex/tracker.js';
-import axios from 'axios';
-
+// import Tracker from './cortex/tracker.js';   
+import request from 'request';
 import { baseURL, ad_id } from './config';
 
 class View {
@@ -12,7 +11,6 @@ class View {
     this.rows = [];
     this.deviceId = '';
     this.productionEnv = process.env.NODE_ENV !== 'development';
-    this.impFired = false;
 
     this.creativeContainer = window.document.getElementById(
     'creativeContainer');
@@ -20,8 +18,8 @@ class View {
     this.creativeContainerDebugger = window.document.getElementById(
     'creativeContainer-debugger');
 
-    this.errorsOverlay = window.document.getElementById(
-    'errors-overlay')
+    // this.errorsOverlay = window.document.getElementById(
+    // 'errors-overlay')
 
     this.imp = function (val) {
       return typeof val === 'undefined' || val === null ? 0 : val;
@@ -80,14 +78,13 @@ class View {
    *
    */
   render() {
-    this.impFired = false;
     Logger.log('Rendering a new view.');
     if (!window.document.getElementById(GLOBAL_VARS.placeholderID)) {
       this.placeholder.render();
     }
 
     if (this.productionEnv) {
-      Tracker.track(this.deviceId, GLOBAL_VARS.campaign, 'tracked');
+      // Tracker.track(this.deviceId, GLOBAL_VARS.campaign, 'tracked');
     }
 
     this._render();
@@ -109,25 +106,14 @@ class View {
    */
   updateView() {
     if (this.rows !== null && this.rows.length !== 0) {
-      if (!this.impFired) {
-        this.impFired = true;
-        setTimeout(() => {
-          this.index++;
-          const url = baseURL + ad_id + '?site_id=' + this.rows[0]._index + '&imp_x=' + this.imp(this.rows[0].impressions_15_sec) + '&lat=' + this.index + '&lon=' + this.rows[0].longitude;
-          axios.get(url)
-          .then(() => {
-            this.errors = 'Api called';
-            // this.errorsOverlay.style.display = 'none';
-          }).catch((err) => {
-            this.placeholder.show();
-            this.errors = err;
-            this.errorsOverlay.style.display = 'block';
-            this.errorsOverlay.innerHTML = `Error: ${this.errors}<br /><br />attempted URL: ${url}`;
-          });
-        }, 0)
+        const url = `${baseURL}${ad_id}?site_id=${this.rows[0]._index}&imp_x=${this.imp(this.rows[0].impressions_15_sec)}&lat=${this.rows[0].latitude}&lon=${this.rows[0].longitude}`;
+        try {
+          request.post(url) 
+        } catch (e) {
+          console.log(e)
+        }
       }
     }
-  }
 
   /**
    * Handles rendering of the main view.
