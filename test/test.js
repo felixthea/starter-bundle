@@ -1,24 +1,33 @@
+/* eslint-disable */
+
 import test from 'ava';
-import { baseURL } from '../src/scripts/config';
-import View from '../src/scripts/view';
+const nock = require('nock');
+const request = require('request');
 
 test('ava test example', t => {
 	t.pass(); 
 });
 
-test('baseUrl exists', t => {
-	if (baseURL) {
-		t.pass();
-	} else {
-		t.fail();
-	}
-});
+nock.disableNetConnect();
 
-test('If no URL is specified, throw an error', t => {
-	const view = new View();
-	if(view.request() === false) {
-		t.pass();
-	} else {
-		t.fail();
-	}
-});
+let body = {};
+let serverMock = nock('http://pda-server.dev.linksvc.com').post('/play/ad?site_id=&imp_x=&lat=&lon=', {}).reply(204);
+
+test('pda server /play endpoint returns 204 response with no content', t => {
+	request({
+		method: 'POST',
+		uri: 'http://pda-server.dev.linksvc.com/play/ad?site_id=&imp_x=&lat=&lon=',
+		body: JSON.stringify(body),
+		headers: {
+		'user-agent': 'some-user-agent'
+		}
+	}).on('response', (res) => {
+		if (!serverMock.isDone()) {
+			t.fail();
+		} else {
+			if (res.statusCode === 204) {
+				t.pass();
+			}
+		}
+	});	
+})

@@ -22,14 +22,10 @@ class View {
     // 'errors-overlay')
 
     this.imp = (val) => (
-      typeof val === 'undefined' || val === null ? 0 : val
+      typeof val === 'undefined' || val === null || isNaN(val) ? 0 : val
     );
 
     this.request = url => {
-      if (!url) {
-        return false;
-      }
-      
       request.post(url)
     }
   }

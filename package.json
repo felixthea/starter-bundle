@@ -7,11 +7,7 @@
     "start": "node node_modules/.bin/webpack-dev-server --define process.env.NODE_ENV='\"development\"' --hot --inline --open --progress --colors --bail --content-base src",
     "prod": "./node_modules/.bin/webpack --define process.env.NODE_ENV='\"production\"' --progress --colors",
     "dev": "./node_modules/.bin/webpack --define process.env.NODE_ENV='\"development\"' --progress --colors",
-<<<<<<< HEAD
     "test": "./node_modules/.bin/nyc ./node_modules/.bin/ava --verbose"
-=======
-    "test": "./node_modules/.bin/ava --verbose"
->>>>>>> initial tests
   },
   "repository": {
     "type": "git",
@@ -38,14 +34,11 @@
     ],
     "babel": "inherit"
   },
-<<<<<<< HEAD
   "nyc": {
     "exclude": [
       "node_modules"
     ]
   },
-=======
->>>>>>> initial tests
   "devDependencies": {
     "ava": "^0.21.0",
     "babel-core": "^6.24.1",
@@ -59,6 +52,8 @@
     "eslint-config-google": "^0.8.0",
     "eslint-loader": "^1.8.0",
     "file-loader": "^0.11.2",
+    "nock": "^9.0.14",
+    "nyc": "^11.1.0",
     "q": "^1.5.0",
     "style-loader": "^0.18.2",
     "svgo-loader": "^1.2.1",
