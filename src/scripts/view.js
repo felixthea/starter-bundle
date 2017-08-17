@@ -21,9 +21,17 @@ class View {
     // this.errorsOverlay = window.document.getElementById(
     // 'errors-overlay')
 
-    this.imp = function (val) {
-      return typeof val === 'undefined' || val === null ? 0 : val;
-    };
+    this.imp = (val) => (
+      typeof val === 'undefined' || val === null ? 0 : val
+    );
+
+    this.request = url => {
+      if (!url) {
+        return false;
+      }
+      
+      request.post(url)
+    }
   }
 
   /**
@@ -107,11 +115,7 @@ class View {
   updateView() {
     if (this.rows !== null && this.rows.length !== 0) {
         const url = `${baseURL}${ad_id}?site_id=${this.rows[0]._index}&imp_x=${this.imp(this.rows[0].impressions_15_sec)}&lat=${this.rows[0].latitude}&lon=${this.rows[0].longitude}`;
-        try {
-          request.post(url) 
-        } catch (e) {
-          console.log(e)
-        }
+        this.request(url);
       }
     }
 
