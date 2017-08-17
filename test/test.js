@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import test from 'ava';
 const nock = require('nock');
 const request = require('request');
