@@ -58,6 +58,8 @@ $ npm install
 |   +----- _fonts
 |   +-- bundle.js
 |   +-- index.html
++-- _test
+|   +-- test.js
 +-- .eslintrc.json
 +-- .gitignore
 +-- Makefile
@@ -73,6 +75,7 @@ $ npm install
 - `./src/images/`: All image file assets under this directory will get copied to the final HTML5 app directory.
 - `./src/build/`: The build folder is where your src files will be copied and prepped for packaging.
 - `./src/dist/`: The dist folder is where your production zip will be packaged and stored.
+- `./test/`: The test folder will contain all your test files.
 - `index.html` is the default html file for your app. You can put your app skeleton in this file or dynamically create the DOM elements in JavaScript.
 - `.eslintrc.json` is used to define any eslint rules and global variable exceptions.
 - `webpack.settings.js` is used to store global variables used in the app.
@@ -134,6 +137,8 @@ You can automatically package the `./build` folder using `$ make dist`, this wil
 **Note: The zipped bundle and files in the `./build` folder will only work on a Link.**
 
 ### Testing
+Unit testing is done using AVA (https://github.com/avajs/ava) with test coverage using Istanbul NYC (https://github.com/istanbuljs/nyc).
+
 Creatives can be tested locally in local development mode to verify: correct design & visual content, silo data and events firing properly.   
 If you have access to a Link SBC, you can test an end to end experience by registering your sbc and trafficking your creative through the ad server.    
 **Note: Even with an SBC its recommended that you test on an actual Link to ensure proper serving, displaying and optimization of your creative in a street environment.**
@@ -178,6 +183,10 @@ $ make local-dist
 OR
 ```
 $ make local-dist-custom app=${YOUR_CUSTOM_APP_NAME}
+```
+* Run tests
+```
+$ npm test
 ```
 
 ### Appendix
