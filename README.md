@@ -59,6 +59,7 @@ $ npm install
 |   +-- bundle.js
 |   +-- index.html
 +-- _test
+|   +-- _helpers
 |   +-- test.js
 +-- .eslintrc.json
 +-- .gitignore
@@ -76,6 +77,7 @@ $ npm install
 - `./src/build/`: The build folder is where your src files will be copied and prepped for packaging.
 - `./src/dist/`: The dist folder is where your production zip will be packaged and stored.
 - `./test/`: The test folder will contain all your test files.
+- `./test/helpers/`: All test helper files.
 - `index.html` is the default html file for your app. You can put your app skeleton in this file or dynamically create the DOM elements in JavaScript.
 - `.eslintrc.json` is used to define any eslint rules and global variable exceptions.
 - `webpack.settings.js` is used to store global variables used in the app.

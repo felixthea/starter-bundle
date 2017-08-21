@@ -5,3 +5,7 @@ dist/
 *.swp
 *.swo
 .DS_Store
+.nyc_output/
+
+# ignoring for now but should check this in
+package-lock.json
