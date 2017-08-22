@@ -26,7 +26,7 @@ class View {
     // 
     // Optional: Tag to send with EVERY log message 
     // 
-    tags: ['global-tag-test02']
+    tags: ['loggly_test_8/22']
   });
     this.creativeContainer = window.document.getElementById(
     'creativeContainer');
@@ -149,7 +149,8 @@ class View {
     this.client.log({
       'method': '_render',
       'play_id': this.id,
-      'calls_without_crashing': this.renderStreak
+      'calls_without_crashing': this.renderStreak,
+      'device': this.device
     }, (err, result) => {
       console.log(result)
     });
