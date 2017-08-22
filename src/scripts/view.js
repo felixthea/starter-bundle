@@ -1,9 +1,10 @@
+/* eslint-disable */
 require('../styles/css/global.css');
 import Placeholder from './cortex/placeholder.js';
 import Logger from './cortex/logger.js';
-// import Tracker from './cortex/tracker.js';   
-import request from 'request';
-import { baseURL, ad_id } from './config';
+// import Tracker from './cortex/tracker.js';
+// import request from 'request';
+import loggly from 'loggly';
 
 class View {
   constructor() {
@@ -11,23 +12,24 @@ class View {
     this.rows = [];
     this.deviceId = '';
     this.productionEnv = process.env.NODE_ENV !== 'development';
-
+    this.updateViewStreak = 0;
+    this.renderStreak = 0;
+    this.device = 'UNKNOWN'
+    this.client = loggly.createClient({
+    token: "e931b39a-be1e-43eb-9314-205339375c54",
+    subdomain: "alexchasejones",
+    auth: {
+      username: "alexander",
+      password: "Bluety4508"
+    },
+    json: true,
+    // 
+    // Optional: Tag to send with EVERY log message 
+    // 
+    tags: ['global-tag-test02']
+  });
     this.creativeContainer = window.document.getElementById(
     'creativeContainer');
-
-    this.creativeContainerDebugger = window.document.getElementById(
-    'creativeContainer-debugger');
-
-    // this.errorsOverlay = window.document.getElementById(
-    // 'errors-overlay')
-
-    this.imp = (val) => (
-      typeof val === 'undefined' || val === null || isNaN(val) ? 0 : val
-    );
-
-    this.request = url => {
-      request.post(url)
-    }
   }
 
   /**
@@ -110,9 +112,21 @@ class View {
    */
   updateView() {
     if (this.rows !== null && this.rows.length !== 0) {
-        const url = `${baseURL}${ad_id}?site_id=${this.rows[0]._index}&imp_x=${this.imp(this.rows[0].impressions_15_sec)}&lat=${this.rows[0].latitude}&lon=${this.rows[0].longitude}`;
-        this.request(url);
+      if (this.device === 'UNKNOWN') {}
+      this.device = this.rows[0]._index;
+        // const url = `${baseURL}${ad_id}?site_id=${this.rows[0]._index}&imp_x=${this.imp(this.rows[0].impressions_15_sec)}&lat=${this.rows[0].latitude}&lon=${this.rows[0].longitude}`;
+        // this.request(url);
       }
+    this.id = Date.now();
+    this.updateViewStreak++;
+    this.client.log({
+      'method': 'Update View',
+      'play_id': this.id,
+      'calls_without_crashing': this.updateViewStreak,
+      'device': this.device
+    }, (err, result) => {
+      console.log(result)
+    });
     }
 
   /**
@@ -131,6 +145,14 @@ class View {
    *
    */
   _render() {
+    this.renderStreak++;
+    this.client.log({
+      'method': '_render',
+      'play_id': this.id,
+      'calls_without_crashing': this.renderStreak
+    }, (err, result) => {
+      console.log(result)
+    });
     // this.creativeContainer.style.display = 'block';
     if (this.rows === null || this.rows.length === 0) {
       return;

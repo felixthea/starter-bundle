@@ -68,6 +68,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "loggly": "^1.1.1",
     "promise": "^8.0.0",
     "request": "^2.81.0"
   }
