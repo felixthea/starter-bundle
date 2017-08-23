@@ -22,7 +22,7 @@ class View {
       password: "Bluety4508"
     },
     json: true,
-    tags: ['test0001']
+    tags: ['test0002']
   });
 
     this.creativeContainer = window.document.getElementById(
@@ -124,7 +124,6 @@ class View {
       }
     }
 
-    this.id = Date.now();
     this.updateViewStreak++;
 
     this.client.log({
@@ -153,6 +152,8 @@ class View {
    *
    */
   _render() {
+    this.id = Date.now();
+
     if (this.rows !== null && this.rows.length !== 0) {
       if (this.device === 'UNKNOWN') {
         this.device = this.rows[0]._index;
