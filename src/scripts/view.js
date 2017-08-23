@@ -14,6 +14,8 @@ class View {
     this.updateViewStreak = 0;
     this.renderStreak = 0;
     this.device = 'UNKNOWN'
+    this.adid = ''
+
     this.client = loggly.createClient({
     token: "e931b39a-be1e-43eb-9314-205339375c54",
     subdomain: "alexchasejones",
@@ -22,7 +24,7 @@ class View {
       password: "Bluety4508"
     },
     json: true,
-    tags: ['test0002']
+    tags: ['WarbyParker']
   });
 
     this.creativeContainer = window.document.getElementById(
@@ -78,7 +80,8 @@ class View {
     this.client.log({
       'method': 'Set Data',
       'play_id': id,
-      'venue': this.device
+      'venue': this.device,
+      'ad_id': this.adid
     }, (err, result) => {
       console.log(result) 
     });
@@ -130,7 +133,8 @@ class View {
       'method': 'Update View',
       'play_id': this.id,
       'calls_without_crashing': this.updateViewStreak,
-      'venue': this.device
+      'venue': this.device,
+      'ad_id': this.adid
     }, (err, result) => {
       console.log(result) 
     });
@@ -165,7 +169,8 @@ class View {
       'method': '_render',
       'play_id': this.id,
       'calls_without_crashing': this.renderStreak,
-      'venue': this.device
+      'venue': this.device,
+      'ad_id': this.adid
     }, (err, result) => {
       console.log(result)
     });
