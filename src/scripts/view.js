@@ -1,9 +1,7 @@
-/* eslint-disable */
 require('../styles/css/global.css');
 import Placeholder from './cortex/placeholder.js';
 import Logger from './cortex/logger.js';
 // import Tracker from './cortex/tracker.js';
-// import request from 'request';
 import loggly from 'loggly';
 
 class View {
@@ -12,6 +10,7 @@ class View {
     this.rows = [];
     this.deviceId = '';
     this.productionEnv = process.env.NODE_ENV !== 'development';
+
     this.updateViewStreak = 0;
     this.renderStreak = 0;
     this.device = 'UNKNOWN'
@@ -23,11 +22,9 @@ class View {
       password: "Bluety4508"
     },
     json: true,
-    // 
-    // Optional: Tag to send with EVERY log message 
-    // 
-    tags: ['loggly_test_8/22']
+    tags: ['test0001']
   });
+
     this.creativeContainer = window.document.getElementById(
     'creativeContainer');
   }
@@ -74,7 +71,17 @@ class View {
 
     if (data && data.length > 0) {
       this.deviceId = data[0]._device_id;
+      this.device = this.rows[0]._index;
     }
+    const id = Date.now();
+
+    this.client.log({
+      'method': 'Set Data',
+      'play_id': id,
+      'venue': this.device
+    }, (err, result) => {
+      console.log(result) 
+    });
   }
 
   /**
@@ -112,20 +119,21 @@ class View {
    */
   updateView() {
     if (this.rows !== null && this.rows.length !== 0) {
-      if (this.device === 'UNKNOWN') {}
-      this.device = this.rows[0]._index;
-        // const url = `${baseURL}${ad_id}?site_id=${this.rows[0]._index}&imp_x=${this.imp(this.rows[0].impressions_15_sec)}&lat=${this.rows[0].latitude}&lon=${this.rows[0].longitude}`;
-        // this.request(url);
+      if (this.device === 'UNKNOWN') {
+        this.device = this.rows[0]._index;
       }
+    }
+
     this.id = Date.now();
     this.updateViewStreak++;
+
     this.client.log({
       'method': 'Update View',
       'play_id': this.id,
       'calls_without_crashing': this.updateViewStreak,
-      'device': this.device
+      'venue': this.device
     }, (err, result) => {
-      console.log(result)
+      console.log(result) 
     });
     }
 
@@ -145,16 +153,21 @@ class View {
    *
    */
   _render() {
+    if (this.rows !== null && this.rows.length !== 0) {
+      if (this.device === 'UNKNOWN') {
+        this.device = this.rows[0]._index;
+      }
+    }
     this.renderStreak++;
+
     this.client.log({
       'method': '_render',
       'play_id': this.id,
       'calls_without_crashing': this.renderStreak,
-      'device': this.device
+      'venue': this.device
     }, (err, result) => {
       console.log(result)
     });
-    // this.creativeContainer.style.display = 'block';
     if (this.rows === null || this.rows.length === 0) {
       return;
     }else{
