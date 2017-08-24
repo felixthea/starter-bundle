@@ -10,4 +10,11 @@ module.exports = {
   campaign: 'LinkNYC Starter Bundle',
   datasetID: 'com.intersection.linknyc.locationdata',
   placeholderID: 'placeholder',
+  logglyToken: '',
+  logglyUsername: '',
+	logglyPassword: '',
+	logglyTag: '',
+	logglySubdomain: '',
+	ad_id: '',
+	baseURL: ''
 };

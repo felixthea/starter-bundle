@@ -1,8 +1,8 @@
 require('../styles/css/global.css');
 import Placeholder from './cortex/placeholder.js';
 import Logger from './cortex/logger.js';
-// import Tracker from './cortex/tracker.js';
 import loggly from 'loggly';
+import request from 'request';
 
 class View {
   constructor() {
@@ -14,18 +14,40 @@ class View {
     this.updateViewStreak = 0;
     this.renderStreak = 0;
     this.device = 'UNKNOWN'
-    this.adid = ''
+
+    this.adid = GLOBAL_VARS.ad_id
+    this.id = Date.now()
 
     this.client = loggly.createClient({
-    token: "e931b39a-be1e-43eb-9314-205339375c54",
-    subdomain: "alexchasejones",
-    auth: {
-      username: "alexander",
-      password: "Bluety4508"
-    },
-    json: true,
-    tags: ['WarbyParker']
-  });
+      token: GLOBAL_VARS.logglyToken,
+      subdomain: GLOBAL_VARS.logglySubdomain,
+      auth: {
+        username: GLOBAL_VARS.logglyUsernames,
+        password: GLOBAL_VARS.logglyPasswords
+      },
+      json: true,
+      tags: [GLOBAL_VARS.logglyTag]
+    });
+
+    this.imp = (val) => (
+      typeof val === 'undefined' || val === null || isNaN(val) ? 0 : val
+    );
+
+    this.request = url => {
+      request.post(url, error => {
+        if (error) {
+          this.placeholder.show()
+        } 
+      })
+    }
+
+    this.params = (method, count, id = this.id) => ({
+      'method': method,
+      'play_id': id,
+      'calls_without_crashing': count,
+      'venue': this.device,
+      'ad_id': this.adid
+    })
 
     this.creativeContainer = window.document.getElementById(
     'creativeContainer');
@@ -75,14 +97,10 @@ class View {
       this.deviceId = data[0]._device_id;
       this.device = this.rows[0]._index;
     }
+
     const id = Date.now();
 
-    this.client.log({
-      'method': 'Set Data',
-      'play_id': id,
-      'venue': this.device,
-      'ad_id': this.adid
-    }, (err, result) => {
+    this.client.log(this.params('setData', 1, id), (err, result) => {
       console.log(result) 
     });
   }
@@ -97,10 +115,6 @@ class View {
     Logger.log('Rendering a new view.');
     if (!window.document.getElementById(GLOBAL_VARS.placeholderID)) {
       this.placeholder.render();
-    }
-
-    if (this.productionEnv) {
-      // Tracker.track(this.deviceId, GLOBAL_VARS.campaign, 'tracked');
     }
 
     this._render();
@@ -129,16 +143,19 @@ class View {
 
     this.updateViewStreak++;
 
-    this.client.log({
-      'method': 'Update View',
-      'play_id': this.id,
-      'calls_without_crashing': this.updateViewStreak,
-      'venue': this.device,
-      'ad_id': this.adid
-    }, (err, result) => {
+    this.client.log(this.params('update view', this.updateViewStreak), (err, result) => {
       console.log(result) 
     });
+
+    let url;
+    if (this.rows !== null && this.rows.length !== 0) {
+      url = `${GLOBAL_VARS.baseURL}/${GLOBAL_VARS.ad_id}?site_id=${this.rows[0]._index}&imp_x=${this.imp(this.rows[0].impressions_15_sec)}&lat=${this.rows[0].latitude}&lon=${this.rows[0].longitude}`;
+        
+    } else {
+      url = `${GLOBAL_VARS.baseURL}/${GLOBAL_VARS.ad_id}`; 
     }
+    this.request(url);  
+  }
 
   /**
    * Handles rendering of the main view.
@@ -165,15 +182,10 @@ class View {
     }
     this.renderStreak++;
 
-    this.client.log({
-      'method': '_render',
-      'play_id': this.id,
-      'calls_without_crashing': this.renderStreak,
-      'venue': this.device,
-      'ad_id': this.adid
-    }, (err, result) => {
+    this.client.log(this.params('render', this.renderStreak), (err, result) => {
       console.log(result)
     });
+
     if (this.rows === null || this.rows.length === 0) {
       return;
     }else{
@@ -183,3 +195,4 @@ class View {
 }
 
 module.exports = View;
+
