@@ -15,7 +15,4 @@ services:
       - BUILDKITE_JOB_ID
     working_dir: /home/starter-bundle-test
     volumes:
-      - ~/.ssh/id_rsa:/root/.ssh/id_rsa
-      - ~/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub
-      - /tmp/.vault_pass:/root/.vault_pass
       - ..:/home/starter-bundle-test
