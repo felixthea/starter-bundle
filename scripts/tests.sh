@@ -2,4 +2,4 @@
 
 set -euxo pipefail
 
-echo "in test script"
+nyc --reporter=lcov npm test
