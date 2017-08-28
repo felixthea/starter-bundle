@@ -1,6 +1,6 @@
 version: '2'
 services:
-  starter-bundle:
+  starter-bundle-test:
     build:
       context: ..
       dockerfile: .buildkite/Dockerfile

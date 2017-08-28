@@ -1,5 +1,5 @@
 steps:
   - label: ":pipeline:"
     command: 
-      - docker-compose -f .buildkite/docker-compose.buildkite.yml run starter-bundle
+      - docker-compose -f .buildkite/docker-compose.buildkite.yml run starter-bundle-test
         bash ./scripts/tests.sh

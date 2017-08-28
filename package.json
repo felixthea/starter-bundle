@@ -7,7 +7,7 @@
     "start": "node node_modules/.bin/webpack-dev-server --define process.env.NODE_ENV='\"development\"' --hot --inline --open --progress --colors --bail --content-base src",
     "prod": "./node_modules/.bin/webpack --define process.env.NODE_ENV='\"production\"' --progress --colors",
     "dev": "./node_modules/.bin/webpack --define process.env.NODE_ENV='\"development\"' --progress --colors",
-    "test": "./node_modules/.bin/nyc ./node_modules/.bin/ava --verbose"
+    "test": "./node_modules/.bin/nyc --reporter=lcov --reporter=html ./node_modules/.bin/ava --verbose"
   },
   "repository": {
     "type": "git",
