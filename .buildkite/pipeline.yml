@@ -1,3 +1,5 @@
 steps:
   - label: ":pipeline:"
-    command: 'scripts/tests.sh'
+    command: 
+      - "npm install"
+      - "scripts/tests.sh"
