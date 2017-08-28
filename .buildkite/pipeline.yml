@@ -1,5 +1,5 @@
 steps:
   - label: ":pipeline:"
     command: 
-      - "npm install"
-      - "scripts/tests.sh"
+      - docker-compose -f .buildkite/docker-compose.buildkite.yml run starter-bundle
+        bash ./scripts/tests.sh
