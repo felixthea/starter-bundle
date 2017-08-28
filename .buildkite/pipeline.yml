@@ -3,3 +3,5 @@ steps:
     command: 
       - docker-compose -f .buildkite/docker-compose.buildkite.yml run starter-bundle-test
         bash ./scripts/tests.sh
+    agents:
+    - queue=link-aws-dev
