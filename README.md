@@ -1,7 +1,7 @@
 # LinkNYC HTML5 Creative Starter Bundle
 
 This starter bundle will provide the necessary tools to build and develop content & creative on a Link.    
-With this bundle you will have the ability to test locally and package for production.
+With this bundle you will have the ability to test locally and package for production
 
 ## Bundle Dependencies
 
